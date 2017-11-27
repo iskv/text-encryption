@@ -29,6 +29,7 @@ int main()
 bool encryption()
 {
     const int k = 3;   
+    const int n = 256; // кол-во символов алфавита ASCII
 
     ifstream inp {"text_inp.txt"};    
     ofstream out {"text_out.txt"};
@@ -37,7 +38,7 @@ bool encryption()
     char c_x, c_y;
     while (inp) {
         c_x = inp.get();
-        c_y = c_x + k;        
+        c_y = (c_x + k) % n;
         out << c_y;
     }
     return true;
@@ -52,16 +53,13 @@ bool decryption()
     ifstream inp{"text_inp.txt"};
     if (!inp) throw "Error opening file!";
 
-    char c = 0;
-    int counter = 0; // кол-во символов в тексте
+    char c = 0;    
     while (inp) {
         c = inp.get();
-        inp_mas[c]++;
-        //counter++;
+        inp_mas[c]++;        
     }
 
-// Анализ зашифрованного файла:
-    counter = 0;
+// Анализ зашифрованного файла:    
     inp.close();
     inp.open("text_out.txt");
     if (!inp) throw "Error opening file!";
@@ -72,7 +70,7 @@ bool decryption()
     }
 
 // Дешифрация:
-    ofstream out{"out_freq.txt"};
+    ofstream out {"out_freq.txt"};
     if (!out) throw "Error save file";
     inp.close();
     inp.open("text_out.txt");
